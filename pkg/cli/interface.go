@@ -20,6 +20,10 @@ import (
 	"github.com/jonboulle/clockwork"
 	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned"
 	k8s "k8s.io/client-go/kubernetes"
+
+	buildv1client "github.com/openshift/client-go/build/clientset/versioned/typed/build/v1"
+	imagev1client "github.com/openshift/client-go/image/clientset/versioned/typed/image/v1"
+
 )
 
 type Stream struct {
@@ -31,6 +35,8 @@ type Stream struct {
 type Clients struct {
 	Tekton versioned.Interface
 	Kube   k8s.Interface
+	OpenShiftBuild buildv1client.BuildV1Interface
+	OpenShiftImage imagev1client.ImageV1Interface
 }
 
 // Params interface provides

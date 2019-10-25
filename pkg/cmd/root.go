@@ -29,6 +29,7 @@ import (
 	"github.com/tektoncd/cli/pkg/cmd/task"
 	"github.com/tektoncd/cli/pkg/cmd/taskrun"
 	"github.com/tektoncd/cli/pkg/cmd/version"
+	"github.com/tektoncd/cli/pkg/cmd/convert"
 )
 
 const usageTemplate = `Usage:{{if .Runnable}}
@@ -84,6 +85,7 @@ func Root(p cli.Params) *cobra.Command {
 		clustertask.Command(p),
 		condition.Command(p),
 		version.Command(),
+		convert.Command(p),
 	)
 
 	return cmd

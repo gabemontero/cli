@@ -23,6 +23,9 @@ import (
 	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned"
 	k8s "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+
+	buildv1client "github.com/openshift/client-go/build/clientset/versioned/typed/build/v1"
+	imagev1client "github.com/openshift/client-go/image/clientset/versioned/typed/image/v1"
 )
 
 type TektonParams struct {
@@ -57,6 +60,22 @@ func (p *TektonParams) kubeClient(config *rest.Config) (k8s.Interface, error) {
 	return k8scs, nil
 }
 
+func (p *TektonParams) openshiftBuildClient(config *rest.Config) (*buildv1client.BuildV1Client, error) {
+	bldClient, err := buildv1client.NewForConfig(config)
+	if err != nil {
+		return nil, errors.Wrapf(err, "Failed to create openshift build client from config")
+	}
+	return bldClient, nil
+}
+
+func (p *TektonParams) openshiftImageClient(config *rest.Config) (*imagev1client.ImageV1Client, error) {
+	imgClient, err := imagev1client.NewForConfig(config)
+	if err != nil {
+		return nil, errors.Wrapf(err, "Failed to create openshift image client from config")
+	}
+	return imgClient, nil
+}
+
 // Only returns kube client, not tekton client
 func (p *TektonParams) KubeClient() (k8s.Interface, error) {
 
@@ -72,6 +91,34 @@ func (p *TektonParams) KubeClient() (k8s.Interface, error) {
 	}
 
 	return kube, nil
+}
+
+func (p *TektonParams) OpenShiftBuildClient() (buildv1client.BuildV1Interface, error) {
+	config, err := p.config()
+	if err != nil {
+		return nil, err
+	}
+
+	bld, err := p.openshiftBuildClient(config)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return bld, nil
+}
+
+func (p *TektonParams) OpenShiftImageClient() (imagev1client.ImageV1Interface, error) {
+	config, err := p.config()
+	if err != nil {
+		return nil, err
+	}
+	img, err := p.openshiftImageClient(config)
+	if err != nil {
+		return nil,err
+	}
+
+	return img, nil
 }
 
 func (p *TektonParams) Clients() (*Clients, error) {
@@ -94,9 +141,21 @@ func (p *TektonParams) Clients() (*Clients, error) {
 		return nil, err
 	}
 
+	bld, err := p.openshiftBuildClient(config)
+	if err != nil {
+		return nil, err
+	}
+
+	img, err := p.openshiftImageClient(config)
+	if err != nil {
+		return nil, err
+	}
+
 	p.clients = &Clients{
 		Tekton: tekton,
 		Kube:   kube,
+		OpenShiftBuild: bld,
+		OpenShiftImage: img,
 	}
 
 	return p.clients, nil
