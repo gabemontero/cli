@@ -33,6 +33,9 @@ require (
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/onsi/ginkgo v1.10.1 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect
+	github.com/openshift/api v0.0.0
+	github.com/openshift/client-go v0.0.0
+	github.com/openshift/library-go v0.0.0
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/cobra v0.0.5
@@ -52,9 +55,9 @@ require (
 	k8s.io/apimachinery v0.0.0-20190221084156-01f179d85dbc
 	k8s.io/cli-runtime v0.0.0-20190325194458-f2b4781c3ae1
 	k8s.io/client-go v0.0.0-20190226174127-78295b709ec6
-	k8s.io/klog v0.2.0 // indirect
+	k8s.io/klog v0.2.0
 	k8s.io/kube-openapi v0.0.0-20171101183504-39a7bf85c140 // indirect
-	k8s.io/kubernetes v1.13.3 // indirect
+	k8s.io/kubernetes v1.13.3
 	knative.dev/pkg v0.0.0-20190719141030-e4bc08cc8ded
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
@@ -62,5 +65,11 @@ require (
 replace github.com/kr/pty => github.com/creack/pty v1.1.7
 
 replace github.com/spf13/cobra => github.com/chmouel/cobra v0.0.0-20191021105835-a78788917390
+
+replace github.com/openshift/api => github.com/openshift/api v3.9.1-0.20190927182313-d4a64ec2cbd8+incompatible
+
+replace github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20190813201236-5a5508328169
+
+replace github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20191021215349-3369b6beaedc
 
 replace git.apache.org/thrift.git => github.com/apache/thrift v0.0.0-20180902110319-2566ecd5d999
